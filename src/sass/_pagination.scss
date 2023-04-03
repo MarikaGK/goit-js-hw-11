@@ -1,0 +1,21 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.load-more-btn {
+  visibility: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  width: 250px;
+  border: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-color: rgb(196, 196, 196);
+}
+
+.is-hidden {
+  visibility: hidden;
+}

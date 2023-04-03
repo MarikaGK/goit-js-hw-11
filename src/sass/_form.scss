@@ -1,0 +1,40 @@
+.search-form {
+  position: sticky;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: rgb(58, 58, 114);
+}
+
+.search-form__border {
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.233);
+  border-radius: 3px;
+}
+
+.search-form__border-active {
+  border-color: aqua;
+}
+
+.search-form__input {
+  border: none;
+  width: 300px;
+}
+
+.search-form__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 36px;
+  width: 50px;
+  border: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background-color: rgb(196, 196, 196);
+}
+
+.search-form__btn-svg {
+  fill: black;
+  background-color: none;
+}
