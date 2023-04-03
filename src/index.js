@@ -90,7 +90,6 @@ function loadMoreImages(d) {
     loadMoreBtn.classList.remove('is-hidden');
     shownHits += 40;
     pageNum += 1;
-    getImages(input.value.trim(), pageNum);
     return;
   }
 }
@@ -112,6 +111,6 @@ const checkInput = e => {
 // input.addEventListener('active', styleActiveForm);
 
 searchBtn.addEventListener('click', checkInput);
-loadMoreBtn.addEventListener('click', loadMoreImages);
+loadMoreBtn.addEventListener('click', getImages);
 
 loadMoreBtn.classList.add('is-hidden');
