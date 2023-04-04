@@ -1,32 +1,45 @@
+// imports
 import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+// const pixabay data
 const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '34547571-9a733d7c1e3b0ef917f0b0722';
 
+// variables from HTML
 const input = document.querySelector('.search-form__input');
 const searchBtn = document.querySelector("button[type='submit']");
 const resultsDiv = document.querySelector('.search-result');
 const paginationDiv = document.querySelector('.pagination');
+
+// pagination button
 paginationDiv.innerHTML =
   '<button class="load-more-btn" type="submit">Load more</button>';
 const loadMoreBtn = document.querySelector('.load-more-btn');
+loadMoreBtn.classList.add('is-hidden');
 
 let pageNum = 1;
 
 const totalHitsInfo = d => {
-  Notiflix.Notify.info(`Hooray! We found ${d} images.`);
+  if (pageNum === 1) {
+    Notiflix.Notify.info(`Hooray! We found ${d} images.`);
+    return;
+  }
 };
 
 const resetMarkup = e => {
   e.innerHTML = '';
 };
 
+// FUNCTIONS
+
+// rendering images from fetch data
 function renderImages(r) {
   const hits = r.data.hits;
-  console.log(hits);
+
+  // adding images cards to HTML
   const renderedImages = hits
     .map(e => {
       return `<div class="photo-card">
@@ -51,6 +64,8 @@ function renderImages(r) {
     })
     .join('');
   resultsDiv.insertAdjacentHTML('beforeend', renderedImages);
+
+  // initializing simplelightbox
   var lightbox = new SimpleLightbox('.search-result a', {
     captions: true,
     captionsData: 'alt',
@@ -58,29 +73,31 @@ function renderImages(r) {
   });
 }
 
-async function getImages(name, page) {
+// fetching data from pixabay API
+async function getImages() {
   try {
+    let inputValue = input.value.trim();
     axios.defaults.baseURL = BASE_URL;
     axios.defaults.params = {
       key: API_KEY,
-      q: `${name}`,
+      q: `${inputValue}`,
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: true,
       per_page: `40`,
-      page: page.toString(),
+      page: pageNum.toString(),
     };
     const response = await axios.get();
     renderImages(response);
     totalHitsInfo(response.data.total);
-    loadMoreImages(response.data.total);
+    loadMoreImagesBtn(response.data.total);
     return;
   } catch (error) {
     Notiflix.Notify.failure(error);
   }
 }
 
-function loadMoreImages(d) {
+function loadMoreImagesBtn(d) {
   let shownHits = 40;
   if (d <= shownHits) {
     loadMoreBtn.classList.add('is-hidden');
@@ -105,12 +122,10 @@ const checkInput = e => {
     return Notiflix.Notify.warning('This value may not exceed 100 characters');
   }
   pageNum = 1;
-  getImages(inputValueTrimmed, pageNum);
+  getImages();
 };
 
 // input.addEventListener('active', styleActiveForm);
 
 searchBtn.addEventListener('click', checkInput);
 loadMoreBtn.addEventListener('click', getImages);
-
-loadMoreBtn.classList.add('is-hidden');
