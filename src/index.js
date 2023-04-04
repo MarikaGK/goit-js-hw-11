@@ -21,6 +21,7 @@ const loadMoreBtn = document.querySelector('.load-more-btn');
 loadMoreBtn.classList.add('is-hidden');
 
 let pageNum = 1;
+let shownHits = 40;
 
 const totalHitsInfo = d => {
   if (pageNum === 1) {
@@ -98,7 +99,6 @@ async function getImages() {
 }
 
 function loadMoreImagesBtn(d) {
-  let shownHits = 40;
   if (d <= shownHits) {
     loadMoreBtn.classList.add('is-hidden');
     return;
@@ -122,10 +122,11 @@ const checkInput = e => {
     return Notiflix.Notify.warning('This value may not exceed 100 characters');
   }
   pageNum = 1;
+  shownHits = 40;
   getImages();
 };
 
-// input.addEventListener('active', styleActiveForm);
+// event listeners
 
 searchBtn.addEventListener('click', checkInput);
 loadMoreBtn.addEventListener('click', getImages);
